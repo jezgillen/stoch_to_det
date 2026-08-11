@@ -1,17 +1,11 @@
 # stoch_to_det
 
-Minimal Lean 4 checker artifact for the deterministic-partition bound.
-
-## Public statements
-
-The three headline declarations are collected in
+The headline declarations are collected in
 `stoch_to_det/MainTheorems.lean`:
 
-- `stoch_to_det.generalized_stoch_to_det_Cdagger1771_joint`
-- `stoch_to_det.Cdagger1771_lt_1771`
-- `stoch_to_det.LW_sum_1771_joint`
+- `stoch_to_det.generalized_stoch_to_det_Cdagger1771_joint` <- This is the existence theorem of the finite bound.
+- `stoch_to_det.Cdagger1771_lt_1771` <- This is the theorem which says C <= 1771
 
-That file is the intended starting point for inspecting the theorem statements.
 
 ## Verification
 
@@ -34,9 +28,6 @@ The expected axiom set for each public declaration is exactly:
 ```text
 [propext, Classical.choice, Quot.sound]
 ```
-
-These are Lean's standard classical and quotient axioms. The development has
-no project-defined axioms.
 
 The two checker commands may also be run directly:
 
