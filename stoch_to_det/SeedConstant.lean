@@ -3,14 +3,13 @@ import stoch_to_det.Cone
 /-!
 # §11. The seed-two-replica constant
 
-Source document: the reference proof, §11 (lines 1054-1074).
 
 `H(A ∣ ε, L₀) ≤ C₀ [M + I(L₁,L₂; Z ∣ L₀)]`, with `C₀ = K_sc + K_orth + 1`.
 
-## Structure of the document's proof
+## Proof structure
 
 Given §§8-10 there is no new mathematics here — the argument is four lines of
-inequality chaining (the reference proof):
+inequality chaining:
 
 ```
 D = scalar + cone                       (Lemma 7.5, chain_split)
@@ -23,9 +22,9 @@ H(A ∣ ε,L₀) = S + D                     (Lemma 7.3, winner_entropy_identity
 Everything it needs from §§8 and 10 arrives through the `RaceQuantities`
 interface of `stoch_to_det.Quotient`.
 
-Per the reference proof (Remark 12.3(b)), the same argument gives the sharper
+The same argument also gives the sharper
 single-replica form `H(A ∣ ε,L₀) ≤ C₀[M + b_Z]`, recorded below as
-`seed_constant_single`; the document states the pair form because
+`seed_constant_single`; the pair form follows because
 `I(L₁;Z ∣ L₀) ≤ I(L₁,L₂;Z ∣ L₀)`. The single form yields the final constant
 `6C₀+3` rather than `108C₀+3`; see `stoch_to_det.Main.T_le_Cstar_sharpest`.
 -/
@@ -145,7 +144,7 @@ private theorem bZ_le_pair (D : SeedSetup p) :
   rw [heq] at hchain
   linarith
 
-/-- The seed leak is bounded by `(K_sc + K_orth)(M + S)` (the reference proof),
+/-- The seed leak is bounded by `(K_sc + K_orth)(M + S)`,
 from `chain_split`, `scalar_bound_Ksc` and `cone_bound_Korth`. -/
 theorem seedLeak_bound (R : RaceQuantities D K) :
     R.seedLeak ≤ (Ksc + Korth) * (D.M + K.Sinfo) := by
@@ -155,9 +154,8 @@ theorem seedLeak_bound (R : RaceQuantities D K) :
       add_le_add (scalar_bound_Ksc R) (cone_bound_Korth R)
     _ = (Ksc + Korth) * (D.M + K.Sinfo) := by ring
 
-/-- **Theorem 11.1**, single-replica form (the reference proof, Remark 12.3(b)):
-`H(A ∣ ε, L₀) ≤ C₀ [M + b_Z]`. This is what the document's argument
-establishes. -/
+/-- **Theorem 11.1**, single-replica form (Remark 12.3(b)):
+`H(A ∣ ε, L₀) ≤ C₀ [M + b_Z]`. -/
 theorem seed_constant_single (R : RaceQuantities D K) :
     R.winnerEntropy ≤ C0 * (D.M + bZ D) := by
   have hle := seedLeak_bound R
@@ -170,8 +168,7 @@ theorem seed_constant_single (R : RaceQuantities D K) :
       rw [C0]
       nlinarith [seed_M_nonneg D]
 
-/-- **Theorem 11.1** (*seed-two-replica-constant-bound*), the reference proof,
-as stated in the document:
+/-- **Theorem 11.1** (*seed-two-replica-constant-bound*):
 `H(A ∣ ε, L₀) ≤ C₀ [M + I(L₁,L₂; Z ∣ L₀)]`. -/
 theorem seed_constant (R : RaceQuantities D K) :
     R.winnerEntropy

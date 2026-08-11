@@ -7,7 +7,6 @@ import stoch_to_det.Toolkit
 /-!
 # §4-§5. The calibrated shared-Gumbel race, and posterior replicas
 
-Source document: the reference proof, §4 (lines 371-433) and §5 (lines 437-603).
 
 ## Where the finite part ends
 
@@ -30,7 +29,7 @@ replica coupling and are listed here with no measure-theoretic hypotheses.
 
 ## Representation of the seed
 
-The document gives two equivalent pictures (the reference proof): iid standard
+There are two equivalent pictures: iid standard
 Gumbel `ε`, or iid `Exp(1)` clocks `E_ℓ = e^{−ε_ℓ}` raced at rates `t_ℓ(z)`.
 Here the exponential picture is primitive (`clockLaw`), matching §7.4 and §10,
 which work in it throughout (memorylessness, shifted-exponential losing clocks),
@@ -58,7 +57,7 @@ variable {α β : Type*} [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq
 /-! ### The standing data of §§4-12 -/
 
 /-- The data fixed once and for all by Theorem 2.5 for the rest of the proof
-(the reference proof): a law with connected support together with an attained
+: a law with connected support together with an attained
 `τ`-optimal common-contact pair `(L, w)`. -/
 structure SeedSetup (p : α × β → ℝ) where
   /-- `p` is a probability law. -/
@@ -84,19 +83,19 @@ namespace SeedSetup
 
 variable {p : α × β → ℝ} (D : SeedSetup p)
 
-/-- The posterior `t_ℓ(z) := λ_ℓ q^ℓ(z) / p(z)` (the reference proof). -/
+/-- The posterior `t_ℓ(z) := λ_ℓ q^ℓ(z) / p(z)`. -/
 noncomputable def post (ℓ : D.L.ι) (z : α × β) : ℝ := D.L.prior ℓ * D.L.comp ℓ z / p z
 
-/-- `M := I(X;Y ∣ L)` (the reference proof). -/
+/-- `M := I(X;Y ∣ L)`. -/
 noncomputable def M : ℝ :=
   condMI (fun q => q.2.1) (fun q => q.2.2) (fun q => q.1) D.L.joint
 
-/-- `B := I(L;X ∣ Y) + I(L;Y ∣ X)` (the reference proof). -/
+/-- `B := I(L;X ∣ Y) + I(L;Y ∣ X)`. -/
 noncomputable def Bq : ℝ :=
   condMI (fun q => q.1) (fun q => q.2.1) (fun q => q.2.2) D.L.joint
     + condMI (fun q => q.1) (fun q => q.2.2) (fun q => q.2.1) D.L.joint
 
-/-- `τ = S_p(L) = M + B` (the reference proof). -/
+/-- `τ = S_p(L) = M + B`. -/
 lemma tau_eq_M_add_Bq : tau p = D.M + D.Bq := by
   rw [← D.optimal]
   unfold Latent.score M Bq
@@ -173,19 +172,19 @@ section FixedSeed
 variable {p : α × β → ℝ} (D : SeedSetup p)
 
 /-- The **calibrated shared-Gumbel winner** `A_ε(z) := argmax_ℓ [ln tℓ(z) + εℓ]`
-(the reference proof). Ties are broken by `Finite.exists_max`'s choice; Lemma 4.2 shows ties are null. -/
+. Ties are broken by `Finite.exists_max`'s choice; Lemma 4.2 shows ties are null. -/
 noncomputable def winner (ε : D.L.ι → ℝ) (z : α × β) : D.L.ι :=
   Classical.choose (Finite.exists_max fun ℓ => Real.log (D.post ℓ z) + ε ℓ)
 
-/-- The winner cell `C_a^ε := {z : A_ε(z) = a}` (the reference proof). -/
+/-- The winner cell `C_a^ε := {z : A_ε(z) = a}`. -/
 noncomputable def cell (ε : D.L.ι → ℝ) (a : D.L.ι) : Finset (α × β) :=
   univ.filter (fun z => winner D ε z = a)
 
-/-- The cell mass `μ_a^ε := p(C_a^ε)` (the reference proof). -/
+/-- The cell mass `μ_a^ε := p(C_a^ε)`. -/
 noncomputable def cellMass (ε : D.L.ι → ℝ) (a : D.L.ι) : ℝ := ∑ z ∈ cell D ε a, p z
 
-/-- The conditional law `r_a^ε := p(· ∣ C_a^ε)` (the reference proof).
-The document omits zero-mass cells; for those cells this falls back to `p`,
+/-- The conditional law `r_a^ε := p(· ∣ C_a^ε)`.
+For zero-mass cells this falls back to `p`,
 which keeps `winnerLatent.comp_isPMF` provable and changes no expression
 weighted by the zero cell mass. -/
 noncomputable def cellLaw (ε : D.L.ι → ℝ) (a : D.L.ι) (z : α × β) : ℝ :=
@@ -287,10 +286,10 @@ lemma winnerLatent_isDet (ε : D.L.ι → ℝ) : (winnerLatent D ε).IsDet := by
     simp [h] at hb
   exact hwa.symm.trans hwb
 
-/-- **Lemma 4.3**, per-seed half (the reference proof). *Finite: no measure theory.*
+/-- **Lemma 4.3**, per-seed half. *Finite: no measure theory.*
 `∑ₐ μₐ^ε G_w(rₐ^ε) = S_p(A_ε) − τ(p)`.
 
-The document derives it from `Gdef_fusion` (Lemma 2.8(a)),
+It follows from `Gdef_fusion` (Lemma 2.8(a)),
 `Latent.score_sub_Ixy` (Lemma 1.2) and `Gdef_of_common_contact_pair`
 (Lemma 2.8(c)). -/
 theorem per_seed_ledger (ε : D.L.ι → ℝ) :
@@ -323,7 +322,7 @@ end FixedSeed
 
 /-! ### The seed law -/
 
-/-- The clock law: iid `Exp(1)` coordinates, `E_ℓ = e^{−ε_ℓ}` (the reference proof).
+/-- The clock law: iid `Exp(1)` coordinates, `E_ℓ = e^{−ε_ℓ}`.
 Taken as primitive because §7.4 and §10 reason by memorylessness. -/
 noncomputable def clockLaw (ι : Type) [Fintype ι] : Measure (ι → ℝ) :=
   Measure.pi fun _ : ι => expMeasure 1
@@ -870,11 +869,11 @@ theorem integrable_winnerScore :
     (Finset.mem_univ (winner D ε))
 
 /-- The **average complete-cell defect**
-`𝒟_w(p,L) := E_ε ∑ₐ μₐ^ε G_w(rₐ^ε)` (the reference proof). -/
+`𝒟_w(p,L) := E_ε ∑ₐ μₐ^ε G_w(rₐ^ε)`. -/
 noncomputable def Dwdefect : ℝ :=
   ∫ ε, (∑ a, cellMass D ε a * Gdef (support p) D.w (cellLaw D ε a)) ∂(seedLaw D.L.ι)
 
-/-- **Lemma 4.3**, averaged half (the reference proof):
+/-- **Lemma 4.3**, averaged half:
 `E_ε S_p(A_ε) = τ(p) + 𝒟_w(p,L)`. -/
 theorem expected_score_eq (hint : Integrable (fun ε => (winnerLatent D ε).score) (seedLaw D.L.ι)) :
     ∫ ε, (winnerLatent D ε).score ∂(seedLaw D.L.ι) = tau p + Dwdefect D := by
@@ -919,7 +918,7 @@ theorem exists_good_seed (c : ℝ)
   rw [heq] at hpos
   linarith
 
-/-- **Corollary 4.4** (the reference proof): a defect bound gives stoch_to_det on this law.
+/-- **Corollary 4.4**: a defect bound gives stoch_to_det on this law.
 If `𝒟_w(p,L) ≤ C τ(p)` then `T(p) ≤ (C+1) τ(p)`. -/
 theorem T_le_of_Dwdefect_le {C : ℝ}
     (hint : Integrable (fun ε => (winnerLatent D ε).score) (seedLaw D.L.ι))
@@ -941,7 +940,7 @@ end Average
 /-! ### §5. Posterior replicas — finite except Theorem 5.7
 
 `L₀, L₁, L₂` are conditionally iid finite draws from the posterior given `Z`
-(the reference proof), so the replica space is a finite product and Lemmas
+, so the replica space is a finite product and Lemmas
 5.2-5.6 below are finite statements. Only Theorem 5.7 involves `ε`.
 
 The replica joint law on `ι × ι × ι × (α × β)` is
@@ -953,7 +952,7 @@ section Replica
 
 variable {p : α × β → ℝ} (D : SeedSetup p)
 
-/-- The source-resolved replica law on `(ℓ₀, ℓ₁, ℓ₂, z)` (the reference proof). -/
+/-- The source-resolved replica law on `(ℓ₀, ℓ₁, ℓ₂, z)`. -/
 noncomputable def replicaLaw : D.L.ι × D.L.ι × D.L.ι × (α × β) → ℝ :=
   fun u => p u.2.2.2 * D.post u.1 u.2.2.2 * D.post u.2.1 u.2.2.2 * D.post u.2.2.1 u.2.2.2
 
@@ -1991,14 +1990,14 @@ private lemma replica_condMI_l₂_eq_l₁ :
     (fun u => u.2.2.1) (fun u => u.2.2.2) (fun u => u.1)
     (fun u => u.2.1) (fun u => u.2.2.2) (fun u => u.1) htriple
 
-/-- `b_Z := I(L₀; Z ∣ L₁)` (the reference proof). -/
+/-- `b_Z := I(L₀; Z ∣ L₁)`. -/
 noncomputable def bZ : ℝ :=
   condMI (fun u => u.1) (fun u => u.2.2.2) (fun u => u.2.1) (replicaLaw D)
 
-/-- `j := I(L;Z)` (the reference proof). -/
+/-- `j := I(L;Z)`. -/
 noncomputable def jInfo : ℝ := MI (fun q => q.1) (fun q => q.2) D.L.joint
 
-/-- **Lemma 5.2** (one-use posterior resampling), the reference proof.
+/-- **Lemma 5.2** (one-use posterior resampling).
 Every contact satisfies `D(r‖q) ≥ ⅔D(r_X‖q_X) + ⅔D(r_Y‖q_Y)`.
 *Finite.* One application of (T1) plus `contact_hypercontractive`. -/
 theorem posterior_resampling {S : Finset (α × β)} {w : α × β → ℝ} (hw : Feasible S w)
@@ -2103,7 +2102,7 @@ theorem posterior_resampling {S : Finset (α × β)} {w : α × β → ℝ} (hw 
   rw [Gdef, hsum, hKL, hKLX, hKLY] at hg
   linarith
 
-/-- **Lemma 5.3** (the resampling budget), the reference proof: `b_Z ≤ 2B`.
+/-- **Lemma 5.3** (the resampling budget): `b_Z ≤ 2B`.
 *Finite.* §12 turns every `b_Z` into `2B` and hence into `τ`. -/
 theorem bZ_le_two_Bq : bZ D ≤ 2 * D.Bq := by
   have hR := replicaLaw_isPMF D
@@ -2233,8 +2232,8 @@ theorem bZ_le_two_Bq : bZ D ≤ 2 * D.Bq := by
   have hcy := condMI_nonneg hR (fun u => u.1) (fun u => u.2.1) (fun u => u.2.2.2.2)
   linarith [hres, hbEq, hB, hcx, hcy]
 
-/-- **Lemma 5.4** (a replica pair carries at most two singles),
-the reference proof: `I(L₁,L₂;Z ∣ L₀) ≤ 2 b_Z`. *Finite.* -/
+/-- **Lemma 5.4** (a replica pair carries at most two singles):
+`I(L₁,L₂;Z ∣ L₀) ≤ 2 b_Z`. *Finite.* -/
 theorem pair_le_two_bZ :
     condMI (fun u => (u.2.1, u.2.2.1)) (fun u => u.2.2.2) (fun u => u.1) (replicaLaw D)
       ≤ 2 * bZ D := by
@@ -2547,7 +2546,7 @@ private lemma pairFusion_cond_identity :
   intro l₀ _
   ring
 
-/-- `Q⁽²⁾`, the triple overlap defect (the reference proof). -/
+/-- `Q⁽²⁾`, the triple overlap defect. -/
 noncomputable def Q2 : ℝ :=
   ∑ a, ∑ c, ∑ b, (∑ z, p z * D.post a z * D.post c z * D.post b z) *
     Gdef (support p) D.w (fun z =>
@@ -2705,7 +2704,7 @@ private lemma replica_interaction_identity :
   rw [hPair] at hXV
   linarith [hXY, hVX, hXV]
 
-/-- **Lemma 5.6(c)**, the reference proof: `Q⁽²⁾ ≤ 6 b_Z`. *Finite.* -/
+/-- **Lemma 5.6(c)**: `Q⁽²⁾ ≤ 6 b_Z`. *Finite.* -/
 theorem Q2_le_six_bZ : Q2 D ≤ 6 * bZ D := by
   have hQ := Q2_cond_identity D
   have hR := replicaLaw_isPMF D
@@ -2716,7 +2715,7 @@ theorem Q2_le_six_bZ : Q2 D ≤ 6 * bZ D := by
   have hpair := pair_le_two_bZ D
   linarith
 
-/-- **Lemma 5.6(d)** (co-information form), the reference proof:
+/-- **Lemma 5.6(d)** (co-information form):
 `I(L₁,L₂;Z ∣ L₀) ≤ Q⁽²⁾ + 2M`. *Finite.* -/
 theorem pair_le_Q2_add_two_M :
     condMI (fun u => (u.2.1, u.2.2.1)) (fun u => u.2.2.2) (fun u => u.1) (replicaLaw D)
@@ -3252,7 +3251,7 @@ lemma integrable_winnerCondInfo :
       (fun q => A q.2) D.L.joint
   simpa only [F] using integrable_winner_code D F
 
-/-- The **cell residual** `R_cell` (the reference proof). Involves the seed. -/
+/-- The **cell residual** `R_cell`. Involves the seed. -/
 noncomputable def Rcell : ℝ :=
   ∫ ε, (∑ a, ∑ b, D.L.prior b *
       (∑ z ∈ cell D ε a, D.L.comp b z) *
@@ -3829,11 +3828,11 @@ lemma average_winner_condInfo_le_bZ :
   rw [hintegral, bZ_eq_condH_sub D]
   exact sub_le_sub_right (average_winner_condH_le_replica_condH D) c
 
-/-- **Theorem 5.7** (posterior-resampling comparison, *cell-defect-posterior-comparison*),
-the reference proof: `𝒟_w(p,L) ≤ R_cell + b_Z`.
+/-- **Theorem 5.7** (posterior-resampling comparison, *cell-defect-posterior-comparison*):
+`𝒟_w(p,L) ≤ R_cell + b_Z`.
 
-The one genuinely continuous statement of §5. The document's proof is four steps
-(the reference proof): fusion within a cell, data processing, removing the
+The one genuinely continuous statement here. Its proof is four steps:
+fusion within a cell, data processing, removing the
 seed via `L₀ ⟂ ε ∣ (Z,A)`, and the calibration coupling `(L₀,A,Z) ≟ (L₀,L₁,Z)`.
 Step (iv) is Lemma 4.2 and is where the continuous seed is discharged back into
 the finite replica coupling. -/

@@ -3,12 +3,11 @@ import stoch_to_det.Entropy
 /-!
 # Latents, the score, and the two functionals `τ` and `T`
 
-Source document: the reference proof, §0 (Conventions) and the Main Theorem.
 
 ## Support handling
 
-The document fixes `𝒮 := supp p` and works "on `𝒮`" throughout. Here `𝒮` is
-not modelled as a subtype: every object lives on the ambient finite product
+We fix `𝒮 := supp p` without modelling it as a subtype: every object lives on
+the ambient finite product
 `α × β`, and membership in the support appears as a hypothesis (`p z ≠ 0`) or a
 support condition (`Supported`). A connected component is then a law on the
 same `α × β` that vanishes off the component, and `reduce_to_connected`
@@ -39,8 +38,7 @@ of rows disjoint from every other component's). -/
 def Adj (z z' : α × β) : Prop := z.1 = z'.1 ∨ z.2 = z'.2
 
 /-- `S` is connected: any two of its cells are joined by a chain of cells of `S`
-each sharing a row or column with the next. This is the standing assumption of
-§§4-12 of the document. -/
+each sharing a row or column with the next. -/
 def IsConnected (S : Finset (α × β)) : Prop :=
   ∀ z ∈ S, ∀ z' ∈ S, Relation.ReflTransGen (fun a b => a ∈ S ∧ b ∈ S ∧ Adj a b) z z'
 

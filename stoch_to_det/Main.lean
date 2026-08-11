@@ -6,7 +6,6 @@ import stoch_to_det.Race
 /-!
 # §12. The universal cell-defect bound and the Main Theorem
 
-Source document: the reference proof, §12 (lines 1078-1150).
 
 ## Structure
 
@@ -16,8 +15,8 @@ Source document: the reference proof, §12 (lines 1078-1150).
 2. `T_le_Cstar_connected` — §§4-11, the connected case.
 
 The whole continuous tier (`stoch_to_det.Seed`, `stoch_to_det.Quotient`, `stoch_to_det.Scalar`, `stoch_to_det.Cone`,
-`stoch_to_det.SeedConstant`) is reached only through the second. The document records
-three routes to it (the reference proof).
+`stoch_to_det.SeedConstant`) is reached only through the second, with three
+available constant assemblies.
 
 ## The chain of Theorem 12.1
 
@@ -37,7 +36,7 @@ T      ≤ (108C₀+3) τ                               (Cor 4.4)
 
 | Theorem | Constant | Difference |
 |---|---|---|
-| `T_le_Cstar` | `108C₀+3 < 4.83×10¹⁶` | the document's headline |
+| `T_le_Cstar` | `108C₀+3 < 4.83×10¹⁶` | baseline assembly |
 | `T_le_CstarSharp` | `12C₀+3 < 5.37×10¹⁵` | uses `I(V;Z∣L₀) ≤ 2b_Z` (Lem 5.4) instead of the co-information detour |
 | `T_le_Cstar_sharpest` | `6C₀+3 < 2.69×10¹⁵` | additionally uses the single-replica form of Thm 11.1 |
 
@@ -67,7 +66,7 @@ private theorem main_bZ_nonneg {p : α × β → ℝ} (D : SeedSetup p) : 0 ≤ 
     (fun u => u.1) (fun u => u.2.2.2) (fun u => u.2.1)
 
 /-- **Theorem 12.1** (universal ungated cell-defect bound,
-*gumbel-cell-defect-universal*), the reference proof:
+*gumbel-cell-defect-universal*):
 `𝒟_w(p,L) ≤ (108 C₀ + 2) τ(p)` for connected support. -/
 theorem Dwdefect_le {p : α × β → ℝ} (D : SeedSetup p)
     (K : Clustering D) (R : RaceQuantities D K) :
@@ -105,7 +104,7 @@ theorem Dwdefect_le {p : α × β → ℝ} (D : SeedSetup p)
     _ ≤ (108 * C0 + 2) * (D.M + D.Bq) := by
       nlinarith [mul_nonneg hC0 hM, mul_nonneg hC0 hB]
 
-/-- The sharpest form of Theorem 12.1 (Remark 12.3(b), the reference proof):
+/-- The sharpest form of Theorem 12.1 (Remark 12.3(b)):
 `𝒟_w ≤ (6C₀ + 2) τ`, from the single-replica seed constant. -/
 theorem Dwdefect_le_sharpest {p : α × β → ℝ} (D : SeedSetup p)
     (K : Clustering D) (R : RaceQuantities D K) :
@@ -132,7 +131,7 @@ theorem Dwdefect_le_sharpest {p : α × β → ℝ} (D : SeedSetup p)
     _ ≤ (6 * C0 + 2) * (D.M + D.Bq) := by
       nlinarith [mul_nonneg hC0 hM]
 
-/-- **The connected case.** the reference proof. This is the single statement
+/-- **The connected case.** This is the single statement
 `T_le_Cstar` consumes from §§4-11. -/
 theorem T_le_Cstar_connected {p : α × β → ℝ} (hp : IsPMF p)
     (hconn : IsConnected (support p)) :
@@ -144,7 +143,7 @@ theorem T_le_Cstar_connected {p : α × β → ℝ} (hp : IsPMF p)
   rw [Cstar]
   convert hT using 1 <;> ring
 
-/-- **Theorem 12.2 (Main Theorem, stoch_to_det)**, the reference proof.
+/-- **Theorem 12.2 (Main Theorem, stoch_to_det)**.
 
 For every finite law `p` on a finite product alphabet,
 `T(p) ≤ C⋆ · τ(p)` with `C⋆ = 108 C₀ + 3`.
@@ -154,7 +153,7 @@ prior, and no number of latent values. -/
 theorem T_le_Cstar {p : α × β → ℝ} (hp : IsPMF p) : T p ≤ Cstar * tau p :=
   reduce_to_connected Cstar (fun q hq hconn => T_le_Cstar_connected hq hconn) p hp
 
-/-- **stoch_to_det**, the qualitative corollary (the reference proof): `τ(p) = 0` forces
+/-- **stoch_to_det**, the qualitative corollary: `τ(p) = 0` forces
 `T(p) = 0`. -/
 theorem T_eq_zero_of_tau_eq_zero {p : α × β → ℝ} (hp : IsPMF p) (h : tau p = 0) :
     T p = 0 :=
@@ -197,7 +196,7 @@ private theorem Dwdefect_le_sharp {p : α × β → ℝ} (D : SeedSetup p)
     _ ≤ (12 * C0 + 2) * (D.M + D.Bq) := by
       nlinarith [mul_nonneg hC0 hM]
 
-/-- **Remark 12.3(a)**, the reference proof:
+/-- **Remark 12.3(a)**:
 `T(p) ≤ (12 C₀ + 3) τ(p)`. -/
 theorem T_le_CstarSharp {p : α × β → ℝ} (hp : IsPMF p) : T p ≤ CstarSharp * tau p := by
   apply reduce_to_connected CstarSharp _ p hp
@@ -209,8 +208,8 @@ theorem T_le_CstarSharp {p : α × β → ℝ} (hp : IsPMF p) : T p ≤ CstarSha
   rw [CstarSharp]
   convert hT using 1 <;> ring
 
-/-- **Remark 12.3(b)**, the reference proof: `T(p) ≤ (6 C₀ + 3) τ(p)`, the best
-constant visible in the document. -/
+/-- **Remark 12.3(b)**: `T(p) ≤ (6 C₀ + 3) τ(p)`, the strongest displayed
+constant. -/
 theorem T_le_Cstar_sharpest {p : α × β → ℝ} (hp : IsPMF p) :
     T p ≤ (6 * C0 + 3) * tau p := by
   apply reduce_to_connected (6 * C0 + 3) _ p hp

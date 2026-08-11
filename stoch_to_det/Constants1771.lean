@@ -4,7 +4,6 @@ import Mathlib.NumberTheory.Harmonic.GammaDeriv
 /-!
 # Exact constants for the improved `1771` theorem
 
-Source document: the reference proof, §§6, 8, and 11--12.
 
 The definitions in this file are symbolic.  In particular,
 `logExpAbsMoment` is an actual Lebesgue integral and `infoFloor1771` contains

@@ -5,10 +5,9 @@ import stoch_to_det.Constants1771
 /-!
 # §7. The duplicate quotient, the exact race law, and the seed interface
 
-Source document: the reference proof, §7 (lines 728-875).
 
 The latent labels are grouped into **clusters** by exact equality of component
-laws. The point (the reference proof) is that the within-cluster posterior
+laws. The point is that the within-cluster posterior
 `π_{u∣c}` does **not depend on `z`**, so the seed factorizes exactly: the label
 race is the cluster race followed by an independent within-cluster race. That
 is what lets §§8-10 analyse a race among *pairwise distinct* contacts, which is
@@ -32,7 +31,7 @@ and their status differs:
   `condMIcts` (`stoch_to_det.Seed`), with the conditional law of `U` given `(Z=z, B=b)`
   an explicit exponential of mean `σ_b(z)` by Lemma 7.4.
 * `cone` conditions additionally on `U`, which is continuous, and `condMIcts`
-  does not cover that. The document never uses `cone` as a standalone object:
+  does not cover that. The construction never uses `cone` as a standalone object:
   it bounds it in one step by integrating (10.2) against the exact joint
   density of (7.1).
 * `D` conditions on the finite `A`, but its argument `ε` is the whole seed
@@ -102,11 +101,11 @@ noncomputable def Q (c : K.κ) : α × β → ℝ := D.L.comp (Classical.choose 
 noncomputable def s (c : K.κ) : ℝ := ∑ ℓ ∈ univ.filter (fun ℓ => K.cl ℓ = c), D.L.prior ℓ
 
 /-- The cluster posterior `σ_c(z) := ∑_{ℓ ∈ c} t_ℓ(z) = s_c Q_c(z)/p(z)`
-(the reference proof). -/
+. -/
 noncomputable def sigma (c : K.κ) (z : α × β) : ℝ :=
   ∑ ℓ ∈ univ.filter (fun ℓ => K.cl ℓ = c), D.post ℓ z
 
-/-- The defining property of the duplicate quotient (the reference proof):
+/-- The defining property of the duplicate quotient:
 `t_ℓ(z) = σ_{cl ℓ}(z) · π_{ℓ}` with the second factor **independent of `z`**. -/
 theorem post_eq_sigma_mul (ℓ : D.L.ι) (z : α × β) (hz : z ∈ support p) :
     D.post ℓ z = K.sigma (K.cl ℓ) z * (D.L.prior ℓ / K.s (K.cl ℓ)) := by
@@ -141,7 +140,7 @@ theorem post_eq_sigma_mul (ℓ : D.L.ι) (z : α × β) (hz : z ∈ support p) :
   field_simp [hpz, hs_pos.ne']
 
 /-- On a connected support every cluster posterior is strictly positive
-(Lemma 2.6), so no zero-posterior edge cases arise (the reference proof). -/
+(Lemma 2.6), so no zero-posterior edge cases arise. -/
 theorem sigma_pos (c : K.κ) (z : α × β) (hz : z ∈ support p) : 0 < K.sigma c z := by
   let ℓ : D.L.ι := Classical.choose (K.surj c)
   have hcl : K.cl ℓ = c := Classical.choose_spec (K.surj c)
@@ -188,11 +187,11 @@ theorem Q_injective : Function.Injective K.Q := by
   simpa only [Classical.choose_spec (K.surj c),
     Classical.choose_spec (K.surj c')] using hrep
 
-/-- `S := I(C₁; Z ∣ C₀)` (the reference proof). -/
+/-- `S := I(C₁; Z ∣ C₀)`. -/
 noncomputable def Sinfo : ℝ :=
   condMI (fun u => K.cl u.2.1) (fun u => u.2.2.2) (fun u => K.cl u.1) (replicaLaw D)
 
-/-- `d := P(C₁ ≠ C₀)` (the reference proof), the **mismatch probability**. -/
+/-- `d := P(C₁ ≠ C₀)`, the **mismatch probability**. -/
 noncomputable def dMis : ℝ :=
   ∑ u ∈ univ.filter (fun u : D.L.ι × D.L.ι × D.L.ι × (α × β) => K.cl u.1 ≠ K.cl u.2.1),
     replicaLaw D u
@@ -971,7 +970,7 @@ private lemma dMis_eq_sum_posterior_mismatch :
             rw [Finset.sum_mul]
       _ = p z * pairSum := by rw [sum_post_eq_one (D := D) z hz, one_mul]
 
-/-- **Lemma 7.2(d)**, the reference proof: `I(L₁;Z ∣ L₀) = S = b_Z`.
+/-- **Lemma 7.2(d)**: `I(L₁;Z ∣ L₀) = S = b_Z`.
 *Finite* — a `push_push` computation using `post_eq_sigma_mul`. -/
 theorem Sinfo_eq_bZ : K.Sinfo = bZ D := by
   rw [Sinfo_eq_cluster_posterior_sum K, bZ_eq_cluster_posterior_sum K]
@@ -992,7 +991,7 @@ theorem dMis_nonneg : 0 ≤ K.dMis := by
 
 /-! ### Lemma 7.4 — the exact race law
 
-the reference proof. At fixed `Z = z` the cluster clocks `T_c := X*_c/σ_c(z)` are
+At fixed `Z = z` the cluster clocks `T_c := X*_c/σ_c(z)` are
 independent `Exp(σ_c(z))` (rate form), giving
 
 * `P(Z=z, B=b, U ∈ du ∣ C₀=g) = q_g(z) e^{−u/σ_b(z)} du`  (7.1)
@@ -1018,37 +1017,37 @@ channel bounds, and the §12 cell-residual link. -/
 bounds the assembly uses. See this module's docstring on why they are packaged
 rather than defined. -/
 structure RaceQuantities {p : α × β → ℝ} (D : SeedSetup p) (K : Clustering D) where
-  /-- `D = I(ε; Z ∣ A, L₀)`, the seed leak (the reference proof). -/
+  /-- `D = I(ε; Z ∣ A, L₀)`, the seed leak. -/
   seedLeak : ℝ
-  /-- `scalar = I(U; Z ∣ B, C₀)` (the reference proof). -/
+  /-- `scalar = I(U; Z ∣ B, C₀)`. -/
   scalar : ℝ
-  /-- `cone = I(X*₋B; Z ∣ B, C₀, U)` (the reference proof). -/
+  /-- `cone = I(X*₋B; Z ∣ B, C₀, U)`. -/
   cone : ℝ
-  /-- `H(A ∣ ε, L₀)`, the quantity Theorem 11.1 bounds (the reference proof). -/
+  /-- `H(A ∣ ε, L₀)`, the quantity Theorem 11.1 bounds. -/
   winnerEntropy : ℝ
-  /-- **Lemma 7.5** (exact chain split), the reference proof. -/
+  /-- **Lemma 7.5** (exact chain split). -/
   chain_split : seedLeak = scalar + cone
-  /-- **Lemma 7.3** (winner-entropy identity), the reference proof:
+  /-- **Lemma 7.3** (winner-entropy identity):
   `H(A ∣ ε,L₀) = I(L₁;Z ∣ L₀) + D_lab`, with `D_lab = D` by Lemma 7.2(c). -/
   winner_entropy_identity : winnerEntropy = K.Sinfo + seedLeak
-  /-- `D_lab ≥ 0` (the reference proof). -/
+  /-- `D_lab ≥ 0`. -/
   seedLeak_nonneg : 0 ≤ seedLeak
   scalar_nonneg : 0 ≤ scalar
   cone_nonneg : 0 ≤ cone
-  /-- **Theorem 8.1** (*cone-scalar-channel-bound*, first half),
-  the reference proof, in bits: `scalar ≤ S + κ d`. Proved by the race
+  /-- **Theorem 8.1** (*cone-scalar-channel-bound*, first half), in bits:
+  `scalar ≤ S + κ d`. Proved by the race
   construction (`stoch_to_det/Race.lean`). -/
   scalar_le : scalar ≤ K.Sinfo + kappa * K.dMis
-  /-- **Theorem 10.1** (*cone-orthant-bound*), the reference proof, in
+  /-- **Theorem 10.1** (*cone-orthant-bound*), in
   nats: `cone · ln 2 ≤ d`. Proved by the race construction. -/
   cone_le_nats : cone * Real.log 2 ≤ K.dMis
-  /-- The `I ≤ H` link of Theorem 12.1 (the reference proof): the cell
+  /-- The `I ≤ H` link of Theorem 12.1: the cell
   residual is at most three times the winner entropy. Proved by the race
   construction. -/
   rcell_le : Rcell D ≤ 3 * winnerEntropy
 
-/-- The race interface extended by the sharpened scalar-channel estimate from
-the reference proof, §8.  Keeping this as an extension preserves the audited
+/-- The race interface extended by the sharpened scalar-channel estimate.
+Keeping this as an extension preserves the audited
 historical theorem unchanged. -/
 structure RaceQuantities1771 {p : α × β → ℝ}
     (D : SeedSetup p) (K : Clustering D) extends RaceQuantities D K where

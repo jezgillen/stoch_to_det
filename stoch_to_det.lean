@@ -26,8 +26,8 @@ import stoch_to_det.MainTheorems
 /-!
 # stoch_to_det — root module
 
-Formalization of the reference proof: the deterministic-partition functional `T` is at
-most a universal constant times the auxiliary-variable functional `τ`.
+The deterministic-partition functional `T` is at most a universal constant
+times the auxiliary-variable functional `τ`.
 
 The historical Main Theorem is `stoch_to_det.T_le_Cstar`. The improved finite theorem,
 ordinary joint-law theorem, and LessWrong joint-law corollary are respectively

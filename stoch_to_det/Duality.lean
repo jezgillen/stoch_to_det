@@ -9,7 +9,6 @@ import stoch_to_det.Envelope
 /-!
 # §2. Kernel duality, contacts, and the defect functional
 
-Source document: the reference proof, §2 (lines 149-316).
 
 The defect `G_w` and the notion of a **contact** are used in every later
 section. Everything here is finite-dimensional real analysis — no probability
@@ -17,7 +16,7 @@ space, no measure theory.
 
 ## Contents
 
-| Lean name | Document | Note |
+| Lean name | Label | Note |
 |---|---|---|
 | `Lambda`, `Feasible`, `Gdef`, `IsContact` | Def 2.1 | definitions |
 | `Gdef_eq_certificate_gap` | Lemma 2.2 | pure algebra |
@@ -30,8 +29,8 @@ space, no measure theory.
 
 ## Mathlib background
 
-§5.2, §6.1 and §6.2 all reduce to Lemma 2.7; the document derives it from
-`Feasible` by Hölder. The `(⇒)` direction of Theorem 2.3 and Corollary 2.4 both
+§5.2, §6.1 and §6.2 all reduce to Lemma 2.7, derived from `Feasible` by Hölder.
+The `(⇒)` direction of Theorem 2.3 and Corollary 2.4 both
 use a first-order (one-sided `ε^{2/3}` perturbation) argument at a maximizer of
 `Λ_w` on a simplex, for which Mathlib has no packaged KKT statement.
 -/
@@ -44,33 +43,33 @@ variable {α β : Type*} [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq
 
 /-! ### Definition 2.1 -/
 
-/-- `Λ_w(u,v) := ∑_{(x,y) ∈ 𝒮} w(x,y) u(x)^{2/3} v(y)^{2/3}` (the reference proof). -/
+/-- `Λ_w(u,v) := ∑_{(x,y) ∈ 𝒮} w(x,y) u(x)^{2/3} v(y)^{2/3}`. -/
 noncomputable def Lambda (S : Finset (α × β)) (w : α × β → ℝ) (u : α → ℝ) (v : β → ℝ) : ℝ :=
   ∑ z ∈ S, w z * u z.1 ^ ((2 : ℝ) / 3) * v z.2 ^ ((2 : ℝ) / 3)
 
 /-- A kernel is **feasible** when `Λ_w(u,v) ≤ 1` for all probability vectors
-`u, v` (the reference proof). -/
+`u, v`. -/
 def Feasible (S : Finset (α × β)) (w : α × β → ℝ) : Prop :=
   (∀ z ∈ S, 0 < w z) ∧ ∀ u : α → ℝ, ∀ v : β → ℝ, IsPMF u → IsPMF v → Lambda S w u v ≤ 1
 
 /-- A certificate `c : 𝒮 → ℝ` is **valid** when `⟨c,q⟩ ≥ Φ(q)` for every law `q`
-on `𝒮` (the reference proof). -/
+on `𝒮`. -/
 def Valid (S : Finset (α × β)) (c : α × β → ℝ) : Prop :=
   ∀ q : α × β → ℝ, IsPMF q → Supported S q → Phi q ≤ ∑ z ∈ S, c z * q z
 
 /-- The reference measure `m_q := w · q_X^{2/3} ⊗ q_Y^{2/3}` restricted to `𝒮`
-(the reference proof). -/
+. -/
 noncomputable def refMeas (S : Finset (α × β)) (w : α × β → ℝ) (q : α × β → ℝ) :
     α × β → ℝ :=
   fun z => if z ∈ S then w z * mX q z.1 ^ ((2 : ℝ) / 3) * mY q z.2 ^ ((2 : ℝ) / 3) else 0
 
 /-- The **defect** `G_w(q) := 3 ∑ q · lg (q / (w q_X^{2/3} q_Y^{2/3})) = 3 D(q ‖ m_q)`
-(the reference proof), in bits, with `D` taken against an *unnormalized* reference. -/
+, in bits, with `D` taken against an *unnormalized* reference. -/
 noncomputable def Gdef (S : Finset (α × β)) (w : α × β → ℝ) (q : α × β → ℝ) : ℝ :=
   3 * ∑ z ∈ S, q z * lg (q z / refMeas S w q z)
 
 /-- `q` is a **contact** of `w`: `G_w(q) = 0`, equivalently `q = w q_X^{2/3} q_Y^{2/3}`
-pointwise (the reference proof). The pointwise form is taken as the definition,
+pointwise. The pointwise form is taken as the definition,
 since that is the form later sections use (§5.2 and §6.2 divide two contact
 equations); the equivalence with `G_w(q) = 0` is `Gdef_eq_zero_iff`. -/
 def IsContact (S : Finset (α × β)) (w : α × β → ℝ) (q : α × β → ℝ) : Prop :=
@@ -219,7 +218,7 @@ private lemma mass_refMeas_eq_Lambda (S : Finset (α × β)) (w : α × β → �
     mass (refMeas S w q) = Lambda S w (mX q) (mY q) := by
   simp [mass, refMeas, Lambda]
 
-/-- **Lemma 2.2** (defect = certificate gap), the reference proof.
+/-- **Lemma 2.2** (defect = certificate gap).
 With `c = −3 lg w`: `G_w(q) = ⟨c,q⟩ − Φ(q)`. -/
 theorem Gdef_eq_certificate_gap {S : Finset (α × β)} {w : α × β → ℝ}
     (hw : ∀ z ∈ S, 0 < w z) {q : α × β → ℝ} (hq : IsPMF q) (hqS : Supported S q) :
@@ -522,7 +521,7 @@ private lemma maximizer_rpow_two_thirds {γ : Type*} [Fintype γ] [DecidableEq �
       dsimp [a]
       simp [hDpos.ne']
 
-/-- **Theorem 2.3** (validity ⟺ feasibility), the reference proof. -/
+/-- **Theorem 2.3** (validity ⟺ feasibility). -/
 theorem valid_iff_feasible {S : Finset (α × β)} {w : α × β → ℝ} (hw : ∀ z ∈ S, 0 < w z) :
     Valid S (fun z => -3 * lg (w z)) ↔ Feasible S w := by
   constructor
@@ -1665,7 +1664,7 @@ private lemma neg_three_lg_two_rpow (r : ℝ) :
   field_simp [Real.log_ne_zero_of_pos_of_ne_one
     (by norm_num : (0 : ℝ) < 2) (by norm_num : (2 : ℝ) ≠ 1)]
 
-/-- **Corollary 2.4**, the reference proof: `τ` as an attained convex program over
+/-- **Corollary 2.4**: `τ` as an attained convex program over
 feasible kernels. -/
 theorem exists_tau_optimal_kernel {p : α × β → ℝ} (hp : IsPMF p) :
     ∃ w : α × β → ℝ, Feasible (support p) w ∧
@@ -1694,7 +1693,7 @@ theorem exists_tau_optimal_kernel {p : α × β → ℝ} (hp : IsPMF p) :
   rw [tau_eq_Psi_sub_envelope hp, ← hcObj, hsum]
   ring
 
-/-- **Theorem 2.5** (*contact-opt*), the reference proof. The existence of an
+/-- **Theorem 2.5** (*contact-opt*). The existence of an
 **attained τ(p)-optimal common-contact pair** `(L, w)`: a latent achieving `τ`
 all of whose components are contacts of one feasible kernel.
 
@@ -1783,7 +1782,7 @@ theorem exists_common_contact_pair {p : α × β → ℝ} (hp : IsPMF p) :
 
 /-! ### Lemmas 2.6-2.8 -/
 
-/-- **Lemma 2.6**, the reference proof: on a connected support every contact has
+/-- **Lemma 2.6**: on a connected support every contact has
 full support. Used from §3 on; it is what makes the near/far dichotomy of
 Theorem 9.1 total. -/
 theorem contact_support_eq {S : Finset (α × β)} {w : α × β → ℝ} (hw : Feasible S w)
@@ -1947,11 +1946,11 @@ theorem contact_support_eq {S : Finset (α × β)} {w : α × β → ℝ} (hw : 
   · intro hzS
     exact (hall z hzS).ne'
 
-/-- **Lemma 2.7** (hypercontractivity of contacts), the reference proof:
+/-- **Lemma 2.7** (hypercontractivity of contacts):
 `E_q[f(X) g(Y)] ≤ ‖f‖_{L^{3/2}(q_X)} ‖g‖_{L^{3/2}(q_Y)}` for `f, g ≥ 0`.
 
-The most reused inequality in the document (§5.2, §6.1, §6.2); the document
-proves it by applying `Feasible` to the tilted marginals. -/
+A frequently reused inequality (§5.2, §6.1, §6.2), proved by applying
+`Feasible` to the tilted marginals. -/
 theorem contact_hypercontractive {S : Finset (α × β)} {w : α × β → ℝ} (hw : Feasible S w)
     {q : α × β → ℝ} (hq : IsContact S w q) {f : α → ℝ} {g : β → ℝ}
     (hf : ∀ x, 0 ≤ f x) (hg : ∀ y, 0 ≤ g y) :
@@ -2080,7 +2079,7 @@ theorem contact_hypercontractive {S : Finset (α × β)} {w : α × β → ℝ} 
       exact (div_le_one
         (mul_pos (Real.rpow_pos_of_pos hApos _) (Real.rpow_pos_of_pos hBpos _))).mp hfeas
 
-/-- **Lemma 2.8(a)** (fusion identity), the reference proof.
+/-- **Lemma 2.8(a)** (fusion identity).
 `∑_b θ_b G_w(r_b) − G_w(r) = 3 I(B;Z) − 2 I(B;X) − 2 I(B;Y)`.
 
 The positivity hypothesis is exactly Definition 2.1's kernel positivity; the
@@ -2149,7 +2148,7 @@ theorem Gdef_fusion {S : Finset (α × β)} {w : α × β → ℝ}
         - 2 * MI (fun q => q.1) (fun q => q.2.2) V.joint :=
       Latent.score_sub_Ixy hr V
 
-/-- **Lemma 2.8(c)**, the reference proof: for an attained τ-optimal
+/-- **Lemma 2.8(c)**: for an attained τ-optimal
 common-contact pair, `G_w(p) = I(X;Y) − τ(p)`. -/
 theorem Gdef_of_common_contact_pair {p : α × β → ℝ} (hp : IsPMF p) (L : Latent p)
     {w : α × β → ℝ} (hw : Feasible (support p) w) (hopt : L.score = tau p)

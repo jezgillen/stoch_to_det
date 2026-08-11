@@ -4,7 +4,7 @@ import stoch_to_det.Race
 # The improved seed constant
 
 This file carries the sharpened scalar estimate and the Hellinger mismatch
-charge through the four-line seed ledger of the reference proof, §11.  The
+charge through the four-line seed ledger. The
 historical `RaceQuantities` API and its constants remain untouched.
 -/
 
@@ -45,8 +45,8 @@ lemma Cdagger1771_pos : 0 < Cdagger1771 := by
   unfold Cdagger1771
   linarith [KD1771_nonneg]
 
-/-- The improved scalar and unchanged cone estimates combine to
-`D_lab ≤ S + beta d`; cf. the reference proof, §11. -/
+/-- The improved scalar and unchanged cone estimates combine to give
+`D_lab ≤ S + beta d`. -/
 theorem seedLeak_bound_1771 (R : RaceQuantities1771 D K) :
     R.toRaceQuantities.seedLeak ≤ K.Sinfo + beta1771 * K.dMis := by
   have hlog : 0 < Real.log 2 := Real.log_pos one_lt_two

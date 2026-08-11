@@ -4,7 +4,7 @@ import stoch_to_det.SeedConstant1771
 /-!
 # The improved finite-latent stoch_to_det theorem
 
-This module closes the finite part of the reference proof.  It reuses the
+This module proves the improved finite theorem. It reuses the
 audited seed, cell, and connected-component reductions, changing only the
 quantitative inputs proved in the improved modules.
 -/
@@ -28,7 +28,7 @@ private theorem main1771_Bq_nonneg {p : α × β → ℝ} (D : SeedSetup p) :
     (condMI_nonneg D.L.joint_isPMF
       (fun q => q.1) (fun q => q.2.2) (fun q => q.2.1))
 
-/-- Improved universal cell-defect bound, §12 of the reference proof. -/
+/-- Improved universal cell-defect bound. -/
 theorem Dwdefect_le_1771 {p : α × β → ℝ} (D : SeedSetup p)
     (K : Clustering D) (R : RaceQuantities1771 D K) :
     Dwdefect D ≤ KD1771 * tau p := by

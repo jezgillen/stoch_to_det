@@ -9,7 +9,6 @@ import stoch_to_det.Prelude
 /-!
 # Finite entropy and mutual information
 
-Source document: the reference proof, §0.
 
 Mathlib (v4.33.0-rc2) has **no Shannon entropy and no mutual information**; it has
 `Mathlib.InformationTheory.KullbackLeibler` (`klDiv`, `ℝ≥0∞`-valued, in nats)
@@ -18,8 +17,8 @@ built from scratch.
 
 ## The representation
 
-Everything in §§0-3, 5, 7, 9 of the document is a finite sum over a finite
-support. We represent a *nonnegative finite measure* on a `Fintype α` as a bare
+The finite-alphabet layer consists of finite sums over finite supports. We
+represent a *nonnegative finite measure* on a `Fintype α` as a bare
 function `m : α → ℝ` carrying a separate `IsFinMeas m` hypothesis, rather than
 as a bundled structure. Note that `𝖧` is 1-homogeneous and is applied to
 *unnormalized* measures throughout (§0, §2: `m_q := w · q_X^{2/3} ⊗ q_Y^{2/3}`
@@ -56,7 +55,7 @@ lemma IsPMF.isFinMeas {m : α → ℝ} (h : IsPMF m) : IsFinMeas m := h.nonneg
 
 /-- `𝖧(m) := ∑ m · lg(|m|/m)`, the 1-homogeneous entropy of §0, in bits.
 
-The document's convention `0 log 0 := 0` is automatic here: at `m a = 0` the
+The convention `0 log 0 := 0` is automatic here: at `m a = 0` the
 summand is `0 * lg (mass m / 0) = 0 * lg 0 = 0`. See `stoch_to_det.Prelude`. -/
 noncomputable def H (m : α → ℝ) : ℝ := ∑ a, m a * lg (mass m / m a)
 

@@ -6,7 +6,6 @@ import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
 /-!
 # §1. The two functionals as envelopes
 
-Source document: the reference proof, §1 (lines 101-145).
 
 Three results, in dependency order:
 
@@ -17,7 +16,7 @@ Three results, in dependency order:
 
 ## Mathlib background
 
-Lemmas 1.1 and 1.2 are `Finset.sum` algebra over `stoch_to_det.Entropy`. The document's
+Lemmas 1.1 and 1.2 are `Finset.sum` algebra over `stoch_to_det.Entropy`. The
 proof of Corollary 1.3 uses Carathéodory for the hypograph together with a
 compactness argument; the relevant Mathlib entries are `convexHull_eq_union`,
 `IsCompact.exists_isMaxOn`, and — for concavity of the entropy —
@@ -156,7 +155,7 @@ private lemma Latent.sum_prior_mul_Phi (V : Latent p) :
       rw [Finset.sum_sub_distrib, Finset.sum_sub_distrib]
       simp only [← Finset.mul_sum]
 
-/-- **Lemma 1.1** (decomposition identity), the reference proof.
+/-- **Lemma 1.1** (decomposition identity).
 `S_p(V) = Ψ(p) − ∑ᵥ λᵥ Φ(qᵥ)`. -/
 theorem Latent.score_eq (hp : IsPMF p) (V : Latent p) :
     V.score = Psi p - ∑ v, V.prior v * Phi (V.comp v) := by
@@ -268,7 +267,7 @@ theorem Latent.score_eq (hp : IsPMF p) (V : Latent p) :
   unfold Psi
   ring
 
-/-- **Lemma 1.2** (score identity), the reference proof.
+/-- **Lemma 1.2** (score identity).
 `S_p(V) − I(X;Y) = 3 I(V;Z) − 2 I(V;X) − 2 I(V;Y)`. -/
 theorem Latent.score_sub_Ixy (hp : IsPMF p) (V : Latent p) :
     V.score - Ixy p
@@ -307,7 +306,7 @@ the same optimization as minimizing the score). -/
 noncomputable def concaveEnvelopePhi (p : α × β → ℝ) : ℝ :=
   ⨆ V : Latent p, ∑ v, V.prior v * Phi (V.comp v)
 
-/-- **Corollary 1.3**, first half, the reference proof: `τ(p) = Ψ(p) − Φ̂(p)`. -/
+/-- **Corollary 1.3**, first half: `τ(p) = Ψ(p) − Φ̂(p)`. -/
 theorem tau_eq_Psi_sub_envelope (hp : IsPMF p) :
     tau p = Psi p - concaveEnvelopePhi p := by
   let payoff : Latent p → ℝ := fun V => ∑ v, V.prior v * Phi (V.comp v)
@@ -1086,9 +1085,9 @@ lemma exists_latent_of_mem_convexHull_phiGraph (hp : IsPMF p) {r : ℝ}
   refine ⟨V, ?_⟩
   exact hpayoff
 
-/-- **Corollary 1.3**, attainment half, the reference proof: the infimum defining
+/-- **Corollary 1.3**, attainment half: the infimum defining
 `τ` is attained by a finite latent. Only finiteness of the attaining latent is
-used downstream (the document's `|𝒮| + 1` cardinality bound is not needed). -/
+used downstream; a sharper `|𝒮| + 1` cardinality bound is not needed. -/
 theorem exists_tau_optimal_latent (hp : IsPMF p) :
     ∃ V : Latent p, V.score = tau p := by
   let slice : Set ((α × β → ℝ) × ℝ) :=

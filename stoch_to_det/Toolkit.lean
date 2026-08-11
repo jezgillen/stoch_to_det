@@ -8,14 +8,13 @@ import stoch_to_det.Entropy
 /-!
 # Lemma 0.1 — the classical toolkit
 
-Source document: the reference proof, §0, Lemma 0.1 (lines 60-99).
 
 Four standard facts, none of which is available in Mathlib in the form used
 here (Mathlib's `klDiv` is `ℝ≥0∞`-valued and in nats; there is no finite
 bits-valued KL, no Bhattacharyya coefficient, and no differential entropy).
-All four proofs are given in full in the document and are short.
+All four proofs are included below.
 
-| Lean name | Document | Used by |
+| Lean name | Label | Used by |
 |---|---|---|
 | `variational_le` | (T1) | Lemma 5.2 |
 | `pinsker` | (T2) | Thm 6.1, Thm 9.1 |
@@ -47,7 +46,7 @@ def AbsCont (P Q : ω → ℝ) : Prop := ∀ a, Q a = 0 → P a = 0
 /-- Total variation between finite laws, `TV(P,Q) := ½ ∑ |P − Q|`. -/
 noncomputable def tvDist (P Q : ω → ℝ) : ℝ := (∑ a, |P a - Q a|) / 2
 
-/-- The Bhattacharyya coefficient `BC(P,Q) := ∑ √(P Q)` (the reference proof). -/
+/-- The Bhattacharyya coefficient `BC(P,Q) := ∑ √(P Q)`. -/
 noncomputable def BC (P Q : ω → ℝ) : ℝ := ∑ a, Real.sqrt (P a * Q a)
 
 /-- Finite Gibbs inequality for the bits-valued `KL`. -/
@@ -82,7 +81,7 @@ private lemma KL_nonneg {P Q : ω → ℝ} (hP : IsPMF P) (hQ : IsPMF Q)
   rw [← sum_div]
   exact div_nonneg hnats (Real.log_pos (by norm_num)).le
 
-/-- **(T1)** variational inequality (the reference proof):
+/-- **(T1)** variational inequality:
 `E_r h − lg E_Q 2^h ≤ D(r ‖ Q)`. -/
 theorem variational_le {r Q : ω → ℝ} (hr : IsPMF r) (hQ : IsPMF Q) (hac : AbsCont r Q)
     (h : ω → ℝ) :
@@ -340,7 +339,7 @@ private lemma log_sum_le (s : Finset ω) {P Q : ω → ℝ}
   rw [hid] at hnorm_nonneg
   linarith
 
-/-- **(T2)** Pinsker (the reference proof): `D(P ‖ Q) ≥ (2/ln 2) TV(P,Q)²` bits. -/
+/-- **(T2)** Pinsker: `D(P ‖ Q) ≥ (2/ln 2) TV(P,Q)²` bits. -/
 theorem pinsker {P Q : ω → ℝ} (hP : IsPMF P) (hQ : IsPMF Q) (hac : AbsCont P Q) :
     2 / Real.log 2 * tvDist P Q ^ 2 ≤ KL P Q := by
   classical
@@ -470,7 +469,7 @@ theorem pinsker {P Q : ω → ℝ} (hP : IsPMF P) (hQ : IsPMF Q) (hac : AbsCont 
     _ ≤ (∑ i, P i * Real.log (P i / Q i)) / Real.log 2 :=
       (div_le_div_iff_of_pos_right (Real.log_pos (by norm_num))).2 hnats
 
-/-- **(T3)** Bhattacharyya, first half (the reference proof):
+/-- **(T3)** Bhattacharyya, first half:
 `min_r [D(r‖P) + D(r‖Q)] = −2 lg BC(P,Q)`. Only `≥` is used (Thm 9.1). -/
 theorem bhattacharyya_le {P Q : ω → ℝ} (hP : IsPMF P) (hQ : IsPMF Q)
     {r : ω → ℝ} (hr : IsPMF r) (hacP : AbsCont r P) (hacQ : AbsCont r Q) :
@@ -566,7 +565,7 @@ theorem bhattacharyya_le {P Q : ω → ℝ} (hP : IsPMF P) (hQ : IsPMF Q)
   change -2 * lg B ≤ KL r P + KL r Q
   linarith
 
-/-- **(T3)** second half (the reference proof): `TV(P,Q) ≤ √(1 − BC(P,Q)²)`. -/
+/-- **(T3)** second half: `TV(P,Q) ≤ √(1 − BC(P,Q)²)`. -/
 theorem tv_le_bhattacharyya {P Q : ω → ℝ} (hP : IsPMF P) (hQ : IsPMF Q) :
     tvDist P Q ≤ Real.sqrt (1 - BC P Q ^ 2) := by
   let u : ω → ℝ := fun a ↦ |Real.sqrt (P a) - Real.sqrt (Q a)|
@@ -938,10 +937,10 @@ private lemma negMulLog_le_cross {a b : ℝ} (ha : 0 ≤ a) (hb : 0 < b) :
 `f`: `h(f) := −∫ f ln f = ∫ negMulLog ∘ f`. -/
 noncomputable def diffEntropy (f : ℝ → ℝ) : ℝ := ∫ x, Real.negMulLog (f x)
 
-/-- **(T4)** max-entropy bound (the reference proof): a real random variable with
+/-- **(T4)** max-entropy bound: a real random variable with
 density `f` and `E|W| ≤ m` has `h(W) ≤ ln(2em)` nats.
 
-The document's proof is one line: `0 ≤ D(f ‖ Laplace(0,m))`.
+The proof starts from `0 ≤ D(f ‖ Laplace(0,m))`.
 
 The integrability hypotheses are essential in Lean: without `hent` and
 `habsint`, the junk value of a divergent integral falsifies the claim for

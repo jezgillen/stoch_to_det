@@ -4,7 +4,6 @@ import stoch_to_det.Quotient
 /-!
 # §9. The mismatch charge
 
-Source document: the reference proof, §9 (lines 939-979).
 
 One theorem: the mismatch probability `d = P(C₁ ≠ C₀)` is charged to `M` and
 `S`,
@@ -25,8 +24,8 @@ that produces both `c_*` and `δ_*`.
 
 The near/far dichotomy is total only because every `Q_c` has full support on
 the connected `𝒮` (Lemma 2.6). That is where the connectedness reduction of §3
-enters the constant, and why the document reduces to connected supports first
-(the reference proof).
+enters the constant, and why the reduction to connected supports comes first
+.
 -/
 
 namespace stoch_to_det
@@ -37,7 +36,7 @@ variable {α β : Type*} [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq
 variable {p : α × β → ℝ} {D : SeedSetup p} (K : Clustering D)
 
 /-- The replica-pair mass `J_{cd} := P(C₀=c, C₁=d) = ∑_z p σ_c σ_d`, symmetric
-in `c, d` (the reference proof). -/
+in `c, d`. -/
 noncomputable def pairMass (c d : K.κ) : ℝ := ∑ z, p z * K.sigma c z * K.sigma d z
 
 /-- The overlap law `r_{cd} := p σ_c σ_d / J_{cd}`, symmetric in `c, d`. -/
@@ -472,7 +471,7 @@ private lemma BC_Q_pos (c d : K.κ) : 0 < BC (K.Q c) (K.Q d) := by
       Real.sqrt_pos.2 (mul_pos (Q_pos_of_mem_support K c z hz)
         (Q_pos_of_mem_support K d z hz))⟩
 
-/-- **(9.1)**, the reference proof: the exact conditional-KL expansion
+/-- **(9.1)**: the exact conditional-KL expansion
 `S = ∑_{c,d} J_{cd} D(r_{cd} ‖ Q_c)`, every term nonnegative. -/
 theorem Sinfo_eq_sum_KL :
     K.Sinfo = ∑ c, ∑ d, pairMass K c d * KL (overlapLaw K c d) (K.Q c) := by
@@ -500,7 +499,7 @@ theorem Sinfo_eq_sum_KL :
   ring
 
 /-- A pair of distinct clusters is **near** when its laws are within `δ_*` in
-total variation, and **far** otherwise (the reference proof). -/
+total variation, and **far** otherwise. -/
 def IsNear (c d : K.κ) : Prop := TV (K.Q c) (K.Q d) ≤ deltaStar
 
 noncomputable instance (c d : K.κ) : Decidable (IsNear K c d) := Classical.dec _
@@ -666,7 +665,7 @@ private lemma far_pair_KL (c d : K.κ) (hfar : ¬ IsNear K c d) :
       ring
     _ ≤ KL (overlapLaw K c d) (K.Q c) + KL (overlapLaw K c d) (K.Q d) := hbh
 
-/-- The near part of the charge (the reference proof): clusters incident to a near
+/-- The near part of the charge: clusters incident to a near
 pair are individually expensive, so `M` pays for them.
 `∑_{(c,d) near} J_{cd} ≤ M / c_*`. -/
 theorem near_charge :
@@ -717,7 +716,7 @@ theorem near_charge :
       rw [hzero]
   exact hnear_incident.trans hmass
 
-/-- The far part of the charge (the reference proof): a far pair costs
+/-- The far part of the charge: a far pair costs
 `δ_*²/ln 2` inside the exact sum (9.1), by Bhattacharyya.
 `2 ∑_{{c,d} far} J_{cd} ≤ (2 ln 2/δ_*²) S`. -/
 theorem far_charge :
@@ -841,7 +840,7 @@ private lemma dMis_eq_sum_pairMass :
           intro c _
           rw [sum_comm]
 
-/-- **Theorem 9.1** (the exact global charge), the reference proof, in bits:
+/-- **Theorem 9.1** (the exact global charge), in bits:
 `d ≤ M/c_* + (2 ln 2 / δ_*²) S`. -/
 theorem mismatch_charge :
     K.dMis ≤ D.M / cStar + 2 * Real.log 2 / deltaStar ^ 2 * K.Sinfo := by
@@ -862,7 +861,7 @@ theorem mismatch_charge :
     _ ≤ D.M / cStar + 2 * Real.log 2 / deltaStar ^ 2 * K.Sinfo :=
       add_le_add (near_charge K) (far_charge K)
 
-/-- The form §10 consumes (the reference proof): `d/ln 2 ≤ K_orth (M + S)`, using
+/-- The form §10 consumes: `d/ln 2 ≤ K_orth (M + S)`, using
 that `1/(c_* ln 2) = N = K_orth` dominates `2/δ_*² ≈ 1.1 × 10¹⁰`. -/
 theorem mismatch_charge_Korth :
     K.dMis / Real.log 2 ≤ Korth * (D.M + K.Sinfo) := by
@@ -887,7 +886,7 @@ theorem mismatch_charge_Korth :
       exact add_le_add (le_refl _) (mul_le_mul_of_nonneg_right hcoef hS)
     _ = Korth * (D.M + K.Sinfo) := by ring
 
-/-! ## Improved Hellinger mismatch charge (the reference proof, §9) -/
+/-! ## Improved Hellinger mismatch charge -/
 
 /-- The improved near relation uses squared Hellinger distance directly. -/
 def IsHNear (c d : K.κ) : Prop :=

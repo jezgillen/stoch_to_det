@@ -3,15 +3,13 @@ import stoch_to_det.Duality
 /-!
 # §3. Reduction to connected supports
 
-Source document: the reference proof, §3 (lines 320-367).
 
 Lemma 3.1 says `T` and `τ` are both additive over the connected components of
 the bipartite support graph, and concludes that it suffices to prove
 `T ≤ C τ` on connected supports.
 
 `stoch_to_det.Main` consumes §3 through the consequence, `reduce_to_connected`, rather
-than through the two additivity identities; the identities are the document's
-route to it.
+than through the two additivity identities.
 
 The reduction quantifies over laws on the same `α × β` — a component is a law
 on the ambient product that vanishes off the component — so no alphabet
@@ -27,8 +25,8 @@ variable {α β : Type*} [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq
 /-- A **component decomposition** of `p`: a finite family of laws `p i` with
 weights `a i`, whose supports are the connected components of `support p`.
 
-The two `hcol`/`hrow` fields are the document's key observation
-(the reference proof): components occupy disjoint columns and disjoint rows, so
+The two `hcol`/`hrow` fields encode the key observation: components occupy
+disjoint columns and disjoint rows, so
 the component index `K` is a function of `X` alone *and* of `Y` alone. That is
 what makes the `(≥)` direction work. -/
 structure ComponentDecomp (p : α × β → ℝ) where
@@ -930,7 +928,7 @@ private lemma restrict_score_le {p : α × β → ℝ} (hp : IsPMF p)
       (H_nonneg_of_isPMF (fiberWeight_isPMF D V v))
   linarith
 
-/-- **Lemma 3.1**, `τ`-half, the reference proof: `τ(p) = ∑ᵢ αᵢ τ(p⁽ⁱ⁾)`. -/
+/-- **Lemma 3.1**, `τ`-half: `τ(p) = ∑ᵢ αᵢ τ(p⁽ⁱ⁾)`. -/
 theorem tau_eq_sum_components {p : α × β → ℝ} (hp : IsPMF p) (D : ComponentDecomp p) :
     tau p = ∑ i, D.wt i * tau (D.part i) := by
   classical
@@ -990,7 +988,7 @@ private lemma restrictLatent_isDet {p : α × β → ℝ}
   · simpa [restrictLatent, hwt] using Latent.const_isDet (D.part_isPMF i)
   · simpa [restrictLatent, hwt] using conditionalLatent_isDet D V hV i hwt
 
-/-- **Lemma 3.1**, `T`-half, the reference proof: `T(p) = ∑ᵢ αᵢ T(p⁽ⁱ⁾)`. -/
+/-- **Lemma 3.1**, `T`-half: `T(p) = ∑ᵢ αᵢ T(p⁽ⁱ⁾)`. -/
 theorem T_eq_sum_components {p : α × β → ℝ} (hp : IsPMF p) (D : ComponentDecomp p) :
     T p = ∑ i, D.wt i * T (D.part i) := by
   classical
@@ -1021,7 +1019,7 @@ theorem T_eq_sum_components {p : α × β → ℝ} (hp : IsPMF p) (D : Component
       _ ≤ V.score := restrict_score_le hp D V
       _ = T p := hVscore
 
-/-- **Lemma 3.1**, consequence, the reference proof. This is the form §12 uses.
+/-- **Lemma 3.1**, consequence. This is the form §12 uses.
 
 If `T ≤ C τ` holds for every finite law with connected support, it holds for
 every finite law. -/

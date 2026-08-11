@@ -10,7 +10,7 @@ import Mathlib.Probability.Kernel.CompProdEqIff
 
 The single obligation of the continuous tier: build the actual
 `RaceQuantities` for any `SeedSetup` and `Clustering` — i.e. define the
-four seed-level scalars from the reference proof and
+four seed-level scalars and
 prove Lemmas 7.2–7.5 (grouping, winner-entropy identity, exact race law,
 chain split), Theorem 8.1 (`scalar ≤ S + κd`), Theorem 10.1
 (`cone · ln 2 ≤ d`), and the `I ≤ H` cell-residual link of Theorem 12.1.
@@ -6571,7 +6571,7 @@ private lemma scalarMixture_klDiv_eq_entropy
             one_mul, hcrossSum, hFlogValue]
           ring
 
-/-- The off-diagonal context bound of the reference proof.  Under the
+/-- The off-diagonal context bound. Under the
 log-clock bijection this is `W=X+N`; `diffEntropy_log_exp`,
 the exact log-exponential moment, `diffEntropy_le_of_abs_le`, and
 `offdiag_context_bound_nats_1771` supply the analytic estimate. -/
@@ -6876,7 +6876,7 @@ private lemma expMeasure_klDiv_ne_top {s q : ℝ} (hs : 0 < s) (hq : 0 < q) :
     rw [hlog] at hvalue
     linarith
 
-/-- The diagonal context bound of the reference proof, obtained from the
+/-- The diagonal context bound, obtained from the
 golden formula, `klDiv_expMeasure`, and `diag_context_arith`. -/
 private theorem scalar_diag_context {p : α × β → ℝ}
     {D : SeedSetup p} (K : Clustering D) (g : K.κ) :
@@ -9454,9 +9454,8 @@ private theorem race_rcell_le {p : α × β → ℝ} (D : SeedSetup p) :
       rfl
 
 /-- The race construction: the actual seed-level quantities inhabit the
-interface. This is Lemmas 7.2–7.5 + Theorems 8.1 + 10.1 of
-the reference proof, and the only measure-theoretic obligation of the
-development. -/
+interface. This bundles Lemmas 7.2–7.5 and Theorems 8.1 and 10.1, and is the
+only measure-theoretic obligation of the development. -/
 theorem exists_raceQuantities {p : α × β → ℝ} (D : SeedSetup p)
     (K : Clustering D) : Nonempty (RaceQuantities D K) := by
   exact ⟨{

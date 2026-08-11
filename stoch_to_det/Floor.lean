@@ -6,7 +6,6 @@ import stoch_to_det.Toolkit
 /-!
 # §6. The near-collision information floor
 
-Source document: the reference proof, §6 (lines 607-724).
 
 Two theorems:
 
@@ -23,7 +22,7 @@ measure theory — and its only input from earlier sections is
 `stoch_to_det.Duality.contact_hypercontractive` (Lemma 2.7). It is where `c_*` and `δ_*`
 are created, the constants §9 and §10 then spend.
 
-The document's arguments are real analysis on finite alphabets: singular
+The arguments use real analysis on finite alphabets: singular
 vectors of the conditional-expectation operator, interpolation between
 `L^{3/2}`, `L²`, `L^{9/4}`, `L³`, a clipping argument, and Pinsker (T2).
 Pinsker is `stoch_to_det.Toolkit.pinsker`; Mathlib has no finite bits-valued form of it
@@ -1332,8 +1331,7 @@ private lemma abs_joint_mul_square_le {S : Finset (α × β)} {w : α × β → 
 `TV(q,r) := ½ ∑ |q − r|`. -/
 noncomputable def TV (q r : α × β → ℝ) : ℝ := (∑ z, |q z - r z|) / 2
 
-/-- The Hirschfeld-Gebelein-Rényi maximal correlation of a law `q`
-(the reference proof):
+/-- The Hirschfeld-Gebelein-Rényi maximal correlation of a law `q`:
 `ρ(q) := sup { E_q[f(X)g(Y)] : E f = E g = 0, E f² = E g² = 1 }`. -/
 noncomputable def rhoHGR (q : α × β → ℝ) : ℝ :=
   ⨆ fg : {fg : (α → ℝ) × (β → ℝ) //
@@ -1970,7 +1968,7 @@ private lemma right_singular_of_hgr_maximizer {q : α × β → ℝ} (hq : IsPMF
     rw [← hmul y, heq]
     ring
 
-/-- On finite alphabets the supremum defining `ρ` is attained (the reference proof):
+/-- On finite alphabets the supremum defining `ρ` is attained:
 `ρ` is the largest singular value of the conditional-expectation operator `T` of
 Lemma 2.7, with a singular pair `(f,g)` satisfying `Tg = ρf`, `T*f = ρg`.
 The last two conjuncts below state these relations against `L²(q_X)` and
@@ -2498,7 +2496,7 @@ private lemma tv_ge_of_hgr_core {S : Finset (α × β)} {w : α × β → ℝ}
   have htv := tvDist_ge_of_test hq.1 hQ hrho hEP hEQ hMP hMQ
   simpa [Q] using htv
 
-/-- **Theorem 6.1** (alphabet-free HGR information floor), the reference proof.
+/-- **Theorem 6.1** (alphabet-free HGR information floor).
 For a contact `q` of a feasible kernel with `ρ := ρ_HGR(q) > 0`, in bits:
 `I_q(X;Y) ≥ 8ρ¹⁰ / (729 (1+ρ)⁴ ln 2)`.
 
@@ -2555,7 +2553,7 @@ theorem Ixy_ge_hgr_floor {S : Finset (α × β)} {w : α × β → ℝ} (hw : Fe
         (div_nonneg (by norm_num) (Real.log_pos one_lt_two).le)
     _ ≤ Ixy q := hpinsker
 
-/-- The intermediate TV bound of Theorem 6.1 (the reference proof):
+/-- The intermediate TV bound of Theorem 6.1:
 `TV(q, q_X ⊗ q_Y) ≥ 2ρ⁵ / (27(1+ρ)²)`. Isolated as the substance of the clipping argument. -/
 theorem tv_ge_of_hgr {S : Finset (α × β)} {w : α × β → ℝ} (hw : Feasible S w)
     {q : α × β → ℝ} (hq : IsContact S w q) (hrho : 0 < rhoHGR q) :
@@ -2914,7 +2912,7 @@ private lemma cStar_le_hgr_floor {rho : ℝ} (hrho : 1 / 16 ≤ rho) :
     _ = 8 * rho ^ 10 / (729 * (1 + rho) ^ 4 * Real.log 2) := by
       field_simp [hlog, hrhoone.ne']
 
-/-- **Theorem 6.2** (near-collision floor), the reference proof.
+/-- **Theorem 6.2** (near-collision floor).
 Two **distinct** contacts of one feasible kernel, both of full support on the
 same connected `𝒮`, that are `δ_*`-close in total variation, both have
 `ρ_HGR ≥ 1/16` and hence `I(X;Y) ≥ c_*`.
@@ -2948,7 +2946,7 @@ theorem nearcollision_floor {S : Finset (α × β)} {w : α × β → ℝ} (hw :
   have hcr : cStar ≤ Ixy r := (cStar_le_hgr_floor hrgt.le).trans hIr
   exact ⟨hqgt.le, hrgt.le, hcq, hcr⟩
 
-/-! ## Improved Hellinger floor (the reference proof, §6)
+/-! ## Improved Hellinger floor
 
 The historical TV/clipping argument above remains available.  The improved
 proof uses squared Hellinger distance, exact secant moments, and the same HGR

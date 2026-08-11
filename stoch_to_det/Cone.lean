@@ -3,7 +3,6 @@ import stoch_to_det.Scalar
 /-!
 # §10. The cone bound
 
-Source document: the reference proof, §10 (lines 983-1050).
 
 `cone = I(X*₋B ; Z ∣ B, C₀, U) ≤ d` in **nats** — the whole losing vector,
 priced against a single product reference, with **no** face, loser, rank or
@@ -13,20 +12,20 @@ The statement of Theorem 10.1 is the `RaceQuantities.cone_le_nats`
 obligation; this module keeps its shifted-exponential ingredients and the
 `Korth` assembly bound.
 
-## Structure of the document's proof
+## Proof structure
 
 Three steps:
 
-1. **One product reference** (the reference proof). For a unit exponential
+1. **One product reference.** For a unit exponential
    shifted by `a ≥ 0`, the density ratio on the shifted support is the constant
    `eᵃ`, so `D(Law(a+E) ‖ Law(E)) = a` **exactly**. KL is additive over
    products, hence
    `D(P_z^{(u,b)} ‖ Q₀) = u ∑_{c≠b} r_c(z) = u (1/s_z − 1)`  — the coordinate
    sum collapses algebraically.
-2. **Information radius** (the reference proof). The golden formula against the
+2. **Information radius.** The golden formula against the
    true conditional output mixture, discarding `D(P_out ‖ Q) ≥ 0`; this is
    packaged by the race construction in `stoch_to_det.Race`.
-3. **Integrate the exact joint** (the reference proof) against `q_g(z)e^{−u/s_z}du`
+3. **Integrate the exact joint** against `q_g(z)e^{−u/s_z}du`
    using `∫₀^∞ u e^{−u/s} du = s²`, collapsing to
    `E_p[1 − ∑_b σ_b(Z)²] = d` by Lemma 7.2(d).
 
@@ -118,7 +117,7 @@ private theorem map_expMeasure_add_eq_smul_restrict {a : ℝ} (ha : 0 ≤ a) :
     rw [if_neg (not_le.mpr hneg)]
     simp
 
-/-- **Step 1** (the reference proof): a unit exponential shifted by `a ≥ 0` has
+/-- **Step 1**: a unit exponential shifted by `a ≥ 0` has
 `D(Law(a+E) ‖ Law(E)) = a` exactly, in nats.
 
 The density ratio on the shifted support is the *constant* `eᵃ`, which is why
@@ -136,7 +135,7 @@ theorem shifted_exp_klDiv {a : ℝ} (ha : 0 ≤ a) :
   rw [hmap, klDiv_smul_restrict (expMeasure 1) (Set.Ioi a) measurableSet_Ioi c]
   simp [c, Real.coe_toNNReal _ (Real.exp_nonneg a)]
 
-/-- **(10.1)** (the reference proof): additivity of KL over the product of
+/-- **(10.1)**: additivity of KL over the product of
 shifted exponentials, `D(P_z^{(u,b)} ‖ Q₀) = u ∑_{c≠b} r_c(z) = u(1/s_z − 1)`. -/
 theorem product_shift_klDiv (b : K.κ) {z : α × β} (hz : z ∈ support p)
     {u : ℝ} (hu : 0 ≤ u) :
@@ -167,7 +166,7 @@ theorem product_shift_klDiv (b : K.κ) {z : α × β} (hz : z ∈ support p)
     _ = u / K.sigma b z * (1 - K.sigma b z) := by rw [herase]
     _ = u * (1 / K.sigma b z - 1) := by field_simp
 
-/-- The elementary integral of **Step 3** (the reference proof):
+/-- The elementary integral of **Step 3**:
 `∫₀^∞ u e^{−u/s} du = s²` for `s > 0`. -/
 theorem exp_integral_sq {s : ℝ} (hs : 0 < s) :
     ∫ u in Set.Ioi (0 : ℝ), u * Real.exp (-u / s) = s ^ 2 := by
@@ -176,7 +175,7 @@ theorem exp_integral_sq {s : ℝ} (hs : 0 < s) :
   simpa [show (2 : ℝ) - 1 = 1 by norm_num, Real.rpow_one, Real.rpow_two,
     div_eq_mul_inv, hs.ne', mul_comm] using h
 
-/-- **Theorem 10.1**, bits form (the reference proof):
+/-- **Theorem 10.1**, bits form:
 `cone ≤ d/ln 2 ≤ K_orth (M + S)`, using Theorem 9.1. -/
 theorem cone_bound_Korth (R : RaceQuantities D K) :
     R.cone ≤ Korth * (D.M + K.Sinfo) := by

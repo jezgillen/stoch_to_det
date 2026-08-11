@@ -4,30 +4,29 @@ import Mathlib.NumberTheory.Harmonic.GammaDeriv
 /-!
 # §8. The scalar channel theorem
 
-Source document: the reference proof, §8 (lines 879-935).
 
 `scalar = I(σ_B(Z) T ; Z ∣ B, C₀) ≤ S + κ d`, with `κ = (1 + ln 8 − γ)/ln 2`.
 
 The statement of Theorem 8.1 is the `RaceQuantities.scalar_le` obligation;
 this module keeps the scalar analytic ingredients and the `Ksc` assembly bound.
 
-## Structure of the document's proof
+## Proof structure
 
-The document computes in nats and converts at the end; nats-valued statements
+The calculation is performed in nats and converted at the end; nats-valued statements
 here carry the `_nats` suffix. Fix a context `(g,b)` and write `R := p/σ_b(Z)` under the source
 posterior `ν`, `C := −E_ν ln R = D(ν ‖ q_g) ≥ 0`. Then:
 
-* **Off-diagonal `b ≠ g`** (the reference proof). The bijection
+* **Off-diagonal `b ≠ g`.** The bijection
   `W := ln(U/p) = X + N` with `X := −ln R` a function of `Z` and `N := ln T`
   independent turns the problem into a scalar additive-noise channel:
   `I(U;Z ∣ b,g) = h(X+N) − h(N)`. Then `h(N) = γ + 1` (an explicit integral),
   `E|N| ≤ 1 + e⁻¹ ≤ 2`, `E|X| ≤ C + 2`, and the max-entropy bound (T4) gives
   `≤ C + ln 8 − γ`. This is the only place `(T4)` — and hence differential
-  entropy — is used in the document.
-* **Diagonal `b = g`** (the reference proof). The golden formula against the
+  entropy — is used here.
+* **Diagonal `b = g`.** The golden formula against the
   reference `Exp(mean p)`, using
   `D(Exp(mean s) ‖ Exp(mean p)) = ln(p/s) + s/p − 1`. Gives `p·I ≤ 1 − p`.
-* **Assembly** (the reference proof). The mixture identity
+* **Assembly.** The mixture identity
   `∑_b p_{gb} C_{gb} = I(B;Z ∣ C₀=g)` collapses the off-diagonal sum, and
   cluster-level calibration gives `I(B;Z ∣ C₀) = S`, `P(B ≠ C₀) = d`.
 
@@ -294,7 +293,7 @@ theorem logExpAbsMoment_eq_euler_add_two_E1one :
   rw [hsignedHigh] at hsignedSplit
   linarith
 
-/-- The scalar moment constant in the document's literal
+/-- The scalar moment constant in the explicit
 `2/e + γ + 2 E₁(1)` presentation. -/
 theorem alpha1771_eq_E1_formula :
     alpha1771 =
@@ -361,7 +360,7 @@ lemma log_pos_part_le_div_exp_one (r : ℝ) (hr : 0 < r) :
     simpa [Real.exp_log hr, mul_comm] using
       (Real.exp_one_mul_le_exp (x := Real.log r))
 
-/-- `h(ln T) = γ + 1` nats for `T ~ Exp(1)` (the reference proof).
+/-- `h(ln T) = γ + 1` nats for `T ~ Exp(1)`.
 The density of `N = ln T` is `e^{n − eⁿ}`, so `h(N) = −E[N − e^N] = γ + 1`.
 The logarithmic integral is the derivative of the Gamma integral at one. -/
 theorem diffEntropy_log_exp :
@@ -412,7 +411,7 @@ theorem diffEntropy_log_exp :
     _ = ∫ t : ℝ in Set.Ioi 0, g t := hchange
     _ = Real.eulerMascheroniConstant + 1 := hgValue
 
-/-- `E|ln T| ≤ 1 + e⁻¹ ≤ 2` for `T ~ Exp(1)` (the reference proof). -/
+/-- `E|ln T| ≤ 1 + e⁻¹ ≤ 2` for `T ~ Exp(1)`. -/
 theorem abs_log_exp_integral_le :
     ∫ t in Set.Ioi (0 : ℝ), |Real.log t| * Real.exp (-t) ≤ 2 := by
   let f : ℝ → ℝ := fun t => |Real.log t| * Real.exp (-t)
@@ -505,7 +504,7 @@ theorem abs_log_exp_integral_le :
   have hexp_one : Real.exp (-1) ≤ 1 := Real.exp_le_one_iff.mpr (by norm_num)
   linarith
 
-/-- The off-diagonal single-context bound (the reference proof), in nats:
+/-- The off-diagonal single-context bound, in nats:
 `I(U;Z ∣ b,g) ≤ C + ln 8 − γ`, where `C = D(ν ‖ q_g)`.
 The last step is `ln((C+4)/4) ≤ C`, i.e. `e^C ≥ 1 + C/4` for `C ≥ 0`. -/
 theorem offdiag_context_bound_nats {C : ℝ} (hC : 0 ≤ C) :
@@ -526,8 +525,8 @@ theorem offdiag_context_bound_nats {C : ℝ} (hC : 0 ≤ C) :
   unfold cZero
   linarith
 
-/-- The sharpened off-diagonal arithmetic bound from
-the reference proof, §8.  The exact absolute log-exponential moment remains
+/-- The sharpened off-diagonal arithmetic bound. The exact absolute
+log-exponential moment remains
 symbolic in `alpha1771`. -/
 theorem offdiag_context_bound_nats_1771 {C : ℝ} (hC : 0 ≤ C) :
     Real.log (2 * Real.exp 1 * (C + alpha1771)) -
@@ -575,7 +574,7 @@ theorem cOff1771_le_cZero : cOff1771 ≤ cZero := by
   unfold cOff1771 cZero
   linarith
 
-/-- The arithmetic core of the diagonal case (the reference proof): with
+/-- The arithmetic core of the diagonal case: with
 `C = −E_ν ln R ≥ 0` and `E_ν(1/R) ≤ 1/P`, the golden formula against
 `Exp(mean P)` gives `P · I(U;Z ∣ g,g) ≤ P·[−C + E_ν(1/R) − 1] ≤ 1 − P`.
 Stated as the scalar inequality; wiring it to a context depends on how the
@@ -705,7 +704,7 @@ private lemma expMeasure_eq_withDensity_expRateRatio {r u : ℝ}
     rw [exponentialPDF_of_neg hxneg, exponentialPDF_of_neg hxneg]
     simp
 
-/-- The KL between exponentials used by the diagonal case (the reference proof):
+/-- The KL between exponentials used by the diagonal case:
 `D(Exp(mean s) ‖ Exp(mean q)) = ln(q/s) + s/q − 1` nats. -/
 theorem klDiv_expMeasure {s q : ℝ} (hs : 0 < s) (hq : 0 < q) :
     (klDiv (expMeasure (1 / s)) (expMeasure (1 / q))).toReal
@@ -772,7 +771,7 @@ theorem klDiv_expMeasure {s q : ℝ} (hs : 0 < s) (hq : 0 < q) :
       field_simp [hs.ne', hq.ne']
       ring
 
-/-- The form §11 consumes (the reference proof): `scalar ≤ K_sc (M + S)`,
+/-- The form §11 consumes: `scalar ≤ K_sc (M + S)`,
 where `K_sc = κ/c_* = (1 + ln 8 − γ) N` (the first branch of the `max`
 dominates; the second is `≈ 2.75 × 10¹⁰`). -/
 theorem scalar_bound_Ksc (R : RaceQuantities D K) :

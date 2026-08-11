@@ -4,20 +4,18 @@ import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
 /-!
 # Prelude: conventions for the stoch_to_det formalization
 
-Source document: the reference proof, §0 (Conventions).
 
 ## Units
 
-the reference proof states every information quantity in **bits** unless a section is
-explicitly marked *nats* (§8 and §10 compute in nats and convert at the end).
-This file follows the document: `lg = Real.logb 2`, and nats-valued statements
-carry `_nats` in the name and use `Real.log`. §12.4 of the document is an exact
-ledger of bit-valued constants (`c_* = 1/(N ln 2)`, `κ = (1 + ln 8 − γ)/ln 2`,
-`C₀`, `108C₀+3`), reproduced in `stoch_to_det.Constants`.
+Information quantities are in **bits** unless explicitly marked *nats*.
+Here `lg = Real.logb 2`, while nats-valued statements carry `_nats` in the
+name and use `Real.log`. The exact ledger of bit-valued constants
+(`c_* = 1/(N ln 2)`, `κ = (1 + ln 8 − γ)/ln 2`, `C₀`, `108C₀+3`) is reproduced
+in `stoch_to_det.Constants`.
 
 ## The `0 · log 0 = 0` convention
 
-The document writes `𝖧(m) := ∑ m log(|m|/m)` with the convention `0 log 0 := 0`.
+We use `𝖧(m) := ∑ m log(|m|/m)` with the convention `0 log 0 := 0`.
 In Lean this convention is automatic: `Real.log 0 = 0` and `x / 0 = 0`, so
 `m a * lg (mass m / m a)` evaluates to `0` when `m a = 0`, with no `if`-guard
 and no side condition.
